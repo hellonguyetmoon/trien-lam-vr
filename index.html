@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triển lãm VR sinh viên</title>
+<meta name="description" content="Bốn đồ án thực tại ảo (WebGL) của sinh viên lớp 23CDP1, Trường Đại học Kiến trúc Hà Nội, trưng bày tại NECC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --navy:#061a4d; --navy-2:#0a2a7a; --blue:#1556d6; --cyan:#5fd0ff;
+  --gold:#f2c14e; --gold-2:#ffe39a; --ink:#eaf1ff; --muted:#a9bde6;
+  --card:#0b2466cc; --line:#ffffff1f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Be Vietnam Pro",system-ui,sans-serif;color:var(--ink);
+  background:radial-gradient(1200px 600px at 80% -10%,#1d5be8 0%,transparent 60%),
+             radial-gradient(900px 500px at 0% 30%,#0e3fb0 0%,transparent 60%),
+             linear-gradient(180deg,var(--navy-2),var(--navy) 55%,#040f30);
+  min-height:100vh;line-height:1.55;overflow-x:hidden}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ---------- Hero ---------- */
+header.hero{position:relative;padding:72px 0 150px;text-align:center;overflow:hidden}
+.hero .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 75%);opacity:.35}
+.orbit{position:absolute;right:-120px;top:-60px;width:520px;height:520px;border-radius:50%;
+  border:1px solid #7fc8ff55;box-shadow:0 0 80px #3aa0ff55 inset,0 0 60px #2b7bff33}
+.orbit::after{content:"";position:absolute;inset:60px;border-radius:50%;border:1px dashed #7fc8ff44}
+.badge{display:inline-flex;gap:8px;align-items:center;padding:7px 16px;border:1px solid #f2c14e80;border-radius:999px;
+  color:var(--gold-2);font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:#ffffff0d;backdrop-filter:blur(6px)}
+.hero h1{margin:22px auto 10px;font-weight:800;font-size:clamp(34px,6vw,68px);line-height:1.08;letter-spacing:-.01em;
+  background:linear-gradient(180deg,#fff6d6,var(--gold) 55%,#c98d1c);-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 6px 40px #f2c14e22}
+.hero h2{font-size:clamp(16px,2.3vw,24px);font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.hero p.lead{max-width:760px;margin:16px auto 0;color:var(--muted);font-size:clamp(15px,1.7vw,17px)}
+.slogan{margin-top:22px;color:var(--gold);font-style:italic;font-weight:500;display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap}
+.slogan::before,.slogan::after{content:"";width:48px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.slogan::after{transform:scaleX(-1)}
+.cta{margin-top:30px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:700;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#2a1c00;box-shadow:0 8px 24px #f2c14e40}
+.btn-ghost{background:#ffffff12;color:var(--ink);border:1px solid #ffffff33}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.skyline{position:absolute;left:0;right:0;bottom:0;height:150px;pointer-events:none}
+.wave{position:absolute;left:-5%;right:-5%;bottom:-30px;height:90px;border-top:2px solid var(--gold);border-radius:50% 50% 0 0/100% 100% 0 0;
+  box-shadow:0 -8px 30px #f2c14e55;opacity:.8}
+
+/* ---------- Sections ---------- */
+section{padding:64px 0}
+.sec-title{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.sec-title h3{font-size:clamp(24px,3vw,34px);font-weight:800}
+.sec-title h3 span{color:var(--gold)}
+.sec-title p{color:var(--muted);max-width:520px}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.card{position:relative;background:var(--card);border:1px solid #ffffff22;border-radius:20px;overflow:hidden;
+  display:flex;flex-direction:column;box-shadow:0 20px 50px #00000040;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-4px);border-color:#f2c14e88}
+.thumb{aspect-ratio:16/8;position:relative;overflow:hidden}
+.thumb svg{width:100%;height:100%;display:block}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.num{position:absolute;left:16px;top:14px;font-weight:800;font-size:13px;letter-spacing:.1em;padding:5px 10px;border-radius:8px;background:#061a4dcc;color:var(--gold-2);border:1px solid #f2c14e66}
+.body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.body h4{font-size:22px;font-weight:800;line-height:1.25}
+.body .desc{color:var(--muted);font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:4px 10px;border-radius:999px;background:#ffffff12;border:1px solid #ffffff22;color:#cfe0ff}
+.team{font-size:13.5px;color:#c7d6f5;border-top:1px dashed #ffffff26;padding-top:12px}
+.team b{color:var(--gold-2);font-weight:600}
+.actions{display:flex;gap:10px;align-items:center;margin-top:auto;flex-wrap:wrap}
+.qr{margin-left:auto;background:#fff;padding:6px;border-radius:10px;width:84px;height:84px;display:grid;place-items:center}
+.qr img,.qr canvas{width:72px!important;height:72px!important}
+.qr.empty{background:#ffffff10;border:1px dashed #ffffff40;color:var(--muted);font-size:11px;text-align:center;padding:8px;line-height:1.3}
+
+/* ---------- Venue ---------- */
+.venue{display:grid;grid-template-columns:1fr 1.3fr;gap:24px;align-items:stretch}
+.venue .info{background:var(--card);border:1px solid #ffffff22;border-radius:20px;padding:28px}
+.venue .info h4{font-size:22px;margin-bottom:6px}
+.venue .info .addr{color:var(--muted);margin-bottom:18px}
+.venue dl{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:15px;margin-bottom:22px}
+.venue dt{color:var(--gold-2);font-weight:600}
+.map{border-radius:20px;overflow:hidden;border:1px solid #ffffff22;min-height:340px;background:#0b2466}
+.map iframe{width:100%;height:100%;min-height:340px;border:0;display:block;filter:saturate(.9)}
+
+/* ---------- Guide ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:#ffffff0c;border:1px solid #ffffff1f;border-radius:16px;padding:20px}
+.step .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--gold);color:#2a1c00;margin-bottom:10px}
+.step h5{font-size:16px;margin-bottom:4px}
+.step p{color:var(--muted);font-size:14px}
+
+footer{padding:36px 0 48px;border-top:1px solid #ffffff1a;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+#siteQR{background:#fff;padding:6px;border-radius:10px;display:none}
+
+/* ---------- Player modal ---------- */
+.player{position:fixed;inset:0;background:#020818f2;z-index:50;display:none;flex-direction:column}
+.player.open{display:flex}
+.player .bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #ffffff22}
+.player .bar strong{flex:1;color:var(--gold-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player .bar .btn{padding:8px 14px;font-size:14px}
+.player iframe{flex:1;width:100%;border:0;background:#000}
+
+@media (max-width:860px){
+  .cards,.venue{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .orbit{width:340px;height:340px;right:-160px}
+  header.hero{padding:56px 0 130px}
+}
+@media (max-width:480px){
+  .wrap{padding:0 16px}
+  .slogan::before,.slogan::after{display:none}
+  .qr{width:72px;height:72px}.qr img,.qr canvas{width:60px!important;height:60px!important}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="grid"></div><div class="orbit"></div>
+  <div class="wrap" style="position:relative">
+    <span class="badge">Triển lãm đồ án sinh viên · NECC Hà Nội</span>
+    <h1>Không gian Thực tại ảo</h1>
+    <h2>Di sản · Lịch sử · Khoa học qua lăng kính VR</h2>
+    <p class="lead">Bốn sản phẩm VR do sinh viên lớp 23CDP1, Trường Đại học Kiến trúc Hà Nội xây dựng trong học phần
+      <em>Phát triển ứng dụng thực tại ảo</em>. Tất cả chạy trực tiếp trên trình duyệt (WebGL): bấm để trải nghiệm hoặc quét mã QR bằng điện thoại.</p>
+    <div class="slogan">Khoa học công nghệ · Đổi mới sáng tạo · Chuyển đổi số</div>
+    <div class="cta">
+      <a class="btn btn-gold" href="#do-an">Xem 4 đồ án ↓</a>
+      <a class="btn btn-ghost" href="#dia-diem">Địa điểm trưng bày</a>
+    </div>
+  </div>
+  <svg class="skyline" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fc8ff" stop-opacity=".55"/><stop offset="1" stop-color="#7fc8ff" stop-opacity="0"/></linearGradient></defs>
+    <path fill="url(#sk)" d="M0 150V110h40V80h30v30h20V60h26v50h18V90h34V40h22v70h30V75h24v35h40V50h18V20h12v30h18v60h30V85h40v25h22V65h30v45h36V30h26v80h30V95h24V55h30v55h44V70h20V35h14v35h20v40h40V90h30V45h28v65h36V80h24v30h30V60h22v50h40V25h16v85h30V70h34v40h26V50h30v60h40V85h22V40h30v70h36V75h24v35h44V55h18v55h40V95h30V65h26v45h40v40z"/>
+    <path fill="none" stroke="#bfe6ff" stroke-opacity=".5" stroke-width="1" d="M80 110V30h40v80M86 40h28M86 55h28M86 70h28M86 85h28 M1250 110V20h50v90M1256 34h38M1256 50h38M1256 66h38M1256 82h38"/>
+    <path fill="none" stroke="#f2c14e" stroke-opacity=".8" stroke-width="2" d="M560 120q160-70 320 0M720 120V60"/>
+  </svg>
+  <div class="wave"></div>
+</header>
+
+<main>
+<section id="do-an">
+  <div class="wrap">
+    <div class="sec-title">
+      <h3>Bốn đồ án <span>VR</span></h3>
+      <p>Nên dùng máy tính có Chrome/Edge để có trải nghiệm tốt nhất. Điện thoại vẫn mở được nhưng bản build WebGL khá nặng, cần chờ tải.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-title"><h3>Cách <span>trải nghiệm</span></h3></div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h5>Chọn đồ án</h5><p>Bấm “Trải nghiệm” để chơi ngay trên trang, hoặc “Mở tab mới” để chạy toàn màn hình.</p></div>
+      <div class="step"><div class="n">2</div><h5>Chờ tải xong</h5><p>Lần đầu tải có thể mất 20–60 giây tuỳ mạng. Bấm vào khung hình để bắt đầu điều khiển.</p></div>
+      <div class="step"><div class="n">3</div><h5>Điều khiển</h5><p>Thường dùng W A S D để di chuyển, chuột để nhìn quanh. Mỗi đồ án có hướng dẫn riêng trong màn hình đầu.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="dia-diem">
+  <div class="wrap">
+    <div class="sec-title"><h3>Địa điểm <span>trưng bày</span></h3></div>
+    <div class="venue">
+      <div class="info">
+        <h4>Cung Triển lãm Kiến trúc, Quy hoạch Xây dựng Quốc gia (NECC)</h4>
+        <p class="addr">Nam Từ Liêm, Hà Nội</p>
+        <dl>
+          <dt>Đơn vị</dt><dd>Trường Đại học Kiến trúc Hà Nội</dd>
+          <dt>Lớp</dt><dd>23CDP1 · Học phần Phát triển ứng dụng thực tại ảo</dd>
+          <dt>GVHD</dt><dd>Nguyễn Thị Nguyệt</dd>
+        </dl>
+        <a class="btn btn-gold" href="https://maps.app.goo.gl/evfVPLPns2YxWX4n6" target="_blank" rel="noopener">Chỉ đường trên Google Maps ↗</a>
+      </div>
+      <div class="map">
+        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Bản đồ NECC"
+          src="https://www.google.com/maps?q=Cung+Tri%E1%BB%83n+l%C3%A3m+Ki%E1%BA%BFn+tr%C3%BAc+Quy+ho%E1%BA%A1ch+X%C3%A2y+d%E1%BB%B1ng+Qu%E1%BB%91c+gia+(NECC)@21.0087303,105.7851337&z=16&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 Sinh viên lớp 23CDP1 · Trường Đại học Kiến trúc Hà Nội<br>Sản phẩm học tập, phục vụ trưng bày và giới thiệu.</div>
+    <div style="display:flex;align-items:center;gap:12px"><span id="siteQRLabel" style="display:none">Quét để mở trang này</span><div id="siteQR"></div></div>
+  </div>
+</footer>
+
+<div class="player" id="player" role="dialog" aria-modal="true">
+  <div class="bar">
+    <strong id="pTitle"></strong>
+    <a class="btn btn-ghost" id="pNewTab" target="_blank" rel="noopener">Mở tab mới ↗</a>
+    <button class="btn btn-ghost" id="pFull">Toàn màn hình</button>
+    <button class="btn btn-gold" id="pClose">Đóng ✕</button>
+  </div>
+  <iframe id="pFrame" allow="fullscreen; autoplay; gamepad; xr-spatial-tracking; accelerometer; gyroscope" allowfullscreen></iframe>
+</div>
+
+<script>
+/* =====================================================================
+   DÁN LINK WEBGL CỦA TỪNG NHÓM VÀO Ô  url: ""  BÊN DƯỚI LÀ XONG.
+   (Ô nào để trống thì nút hiện "Sắp ra mắt".)
+   Có ảnh chụp màn hình thì điền đường dẫn vào  image: ""  (vd "img/dongho.jpg").
+   ===================================================================== */
+const PROJECTS = [
+  {
+    title: "Họa sắc Đông Hồ",
+    url: "",
+    image: "",
+    art: "dongho",
+    desc: "Bảo tàng ảo hai tầng trưng bày 17 bức tranh Đông Hồ, nối với không gian làng quê 2.5D dựng theo đường nét và màu điệp của tranh dân gian.",
+    tags: ["Di sản văn hoá", "Unity 6", "XR Interaction Toolkit"],
+    team: "Nguyễn Thu Hường (NT), Nguyễn Thị Hoài Anh, Lê Trần Thảo Ly, Lê Thị Tuyết, Nguyễn Thị Hương Giang"
+  },
+  {
+    title: "Hoàng thành Thăng Long",
+    url: "",
+    image: "",
+    art: "hoangthanh",
+    desc: "Tái hiện khu vực Đoan Môn và sân trước Hành cung thời Nguyễn thế kỷ XIX, có nhân vật hoạt ảnh và cổ vật để người xem tương tác.",
+    tags: ["Lịch sử", "Kiến trúc cung đình", "Unity"],
+    team: "Trần Thị Thùy (NT), Bùi Quốc Mạnh, Đới Phi Anh, Lâm Huy Hoàng, Đinh Mạnh Cường"
+  },
+  {
+    title: "Bảo tàng Vũ trụ",
+    url: "",
+    image: "",
+    art: "vutru",
+    desc: "Đi qua Cửa vào, Sảnh Hệ Mặt Trời, Phòng Mặt Trăng và Phòng Tàu vũ trụ; mỗi hiện vật có bảng thông tin và thuyết minh riêng.",
+    tags: ["Khoa học", "Giáo dục", "Unity 6"],
+    team: "Tiêu Thị Ngọc Ánh (NT), Đào Thị Thanh Bình, Ma Thị Hậu, Nguyễn Thùy Dương"
+  },
+  {
+    title: "Hành trình cứu nước của Nguyễn Ái Quốc",
+    url: "",
+    image: "",
+    art: "naq",
+    desc: "Ba không gian lịch sử trên hành trình tìm đường cứu nước: Sài Gòn 1911, Paris 1921–1923 và hang Pác Bó 1941, kèm hiện vật có thông tin giới thiệu.",
+    tags: ["Lịch sử cách mạng", "Unreal Engine 5"],
+    team: "Nguyễn Tiến Đạt (NT), Đàm Nhật Minh, Đào Đức Trung, Nguyễn Công Hào, Đặng Vũ Hội"
+  }
+];
+
+/* ---------- Minh hoạ SVG cho từng đồ án (dùng khi chưa có ảnh) ---------- */
+const ART = {
+  dongho: `<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="400" fill="#f1e2bf"/>
+    <g opacity=".18" fill="#8a6a2e">${Array.from({length:60},(_,i)=>`<circle cx="${(i*137)%800}" cy="${(i*71)%400}" r="${2+(i%3)}"/>`).join("")}</g>
+    <g stroke="#1b1b1b" stroke-width="5">
+      <rect x="70" y="60" width="200" height="280" fill="#c8362b"/>
+      <rect x="300" y="40" width="200" height="300" fill="#2f6b3a"/>
+      <rect x="530" y="60" width="200" height="280" fill="#e8b83a"/>
+    </g>
+    <g fill="#f1e2bf" stroke="#1b1b1b" stroke-width="4">
+      <ellipse cx="170" cy="215" rx="62" ry="48"/><circle cx="210" cy="160" r="26"/><path d="M110 210q-40-60 0-90q10 40 30 50z"/>
+      <circle cx="400" cy="170" r="70"/><path d="M360 250h80l-10 60h-60z"/>
+      <path d="M570 290q60-160 120 0z"/><circle cx="630" cy="140" r="34"/>
+    </g>
+    <g fill="#1b1b1b"><circle cx="218" cy="156" r="5"/><circle cx="380" cy="160" r="6"/><circle cx="420" cy="160" r="6"/><circle cx="640" cy="136" r="5"/></g>
+    <path d="M214 136l14-18 6 22" fill="#c8362b" stroke="#1b1b1b" stroke-width="3"/>
+  </svg>`,
+  hoangthanh: `<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="hs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6b56b"/><stop offset="1" stop-color="#ffe2a8"/></linearGradient></defs>
+    <rect width="800" height="400" fill="url(#hs)"/><circle cx="640" cy="110" r="46" fill="#fff4cf" opacity=".9"/>
+    <rect x="0" y="330" width="800" height="70" fill="#9b6b4a"/>
+    <g fill="#d9cdb6" stroke="#5c3b2a" stroke-width="3">
+      <path d="M90 330V210l20-14h580l20 14v120z"/>
+    </g>
+    <g fill="#5c3b2a"><path d="M180 330v-70a40 40 0 0 1 80 0v70z"/><path d="M350 330v-90a50 50 0 0 1 100 0v90z"/><path d="M540 330v-70a40 40 0 0 1 80 0v70z"/></g>
+    <g fill="#a3302a" stroke="#4a2516" stroke-width="3">
+      <rect x="300" y="140" width="200" height="56"/>
+      <path d="M260 146q140-60 280 0l-20-24H280z" fill="#3d5a4a"/>
+      <path d="M280 96q120-44 240 0l-14-18H294z" fill="#3d5a4a"/>
+      <rect x="330" y="100" width="140" height="26"/>
+    </g>
+    <path d="M250 146q-14-2-22-16M550 146q14-2 22-16M272 96q-12-2-18-14M528 96q12-2 18-14" stroke="#3d5a4a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  </svg>`,
+  vutru: `<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="sun"><stop offset="0" stop-color="#fff2b0"/><stop offset=".5" stop-color="#ffb02e"/><stop offset="1" stop-color="#ff7a00" stop-opacity="0"/></radialGradient>
+      <linearGradient id="spc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#050b2e"/><stop offset="1" stop-color="#1a0b4a"/></linearGradient></defs>
+    <rect width="800" height="400" fill="url(#spc)"/>
+    <g fill="#fff">${Array.from({length:90},(_,i)=>`<circle cx="${(i*263)%800}" cy="${(i*97)%400}" r="${(i%4)/3+.4}" opacity="${.3+(i%5)/7}"/>`).join("")}</g>
+    <circle cx="200" cy="200" r="120" fill="url(#sun)"/>
+    <g fill="none" stroke="#7fc8ff" stroke-opacity=".35"><ellipse cx="200" cy="200" rx="220" ry="80"/><ellipse cx="200" cy="200" rx="330" ry="130"/><ellipse cx="200" cy="200" rx="450" ry="180"/></g>
+    <circle cx="410" cy="225" r="16" fill="#4fa3ff"/><circle cx="520" cy="130" r="26" fill="#d98b4a"/>
+    <ellipse cx="520" cy="130" rx="44" ry="10" fill="none" stroke="#f2d39a" stroke-width="4"/>
+    <circle cx="660" cy="300" r="40" fill="#c9ccd6"/><circle cx="648" cy="290" r="8" fill="#a5a9b6"/><circle cx="676" cy="312" r="6" fill="#a5a9b6"/>
+    <g transform="translate(600 70) rotate(35)"><path d="M0 -40q14 16 14 50h-28q0-34 14-50z" fill="#eaf1ff"/><path d="M-14 10l-12 16h12zM14 10l12 16h-12z" fill="#ff5a5a"/><path d="M-8 12q8 26 16 0" fill="#ffb02e"/><circle cy="-12" r="6" fill="#4fa3ff"/></g>
+  </svg>`,
+  naq: `<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="nq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a1414"/><stop offset="1" stop-color="#2a0606"/></linearGradient></defs>
+    <rect width="800" height="400" fill="url(#nq)"/>
+    <g fill="none" stroke="#ffffff" stroke-opacity=".08">${Array.from({length:9},(_,i)=>`<path d="M0 ${40+i*40}q400 ${i%2?30:-30} 800 0"/>`).join("")}</g>
+    <path d="M630 290C520 330 330 320 210 150 M210 150C330 120 520 110 640 120" fill="none" stroke="#f2c14e" stroke-width="4" stroke-dasharray="10 10"/>
+    <g font-family="Be Vietnam Pro,sans-serif" font-weight="700" fill="#ffe39a" text-anchor="middle">
+      <circle cx="630" cy="290" r="14" fill="#f2c14e"/><text x="630" y="335" font-size="24">Sài Gòn · 1911</text>
+      <circle cx="210" cy="150" r="14" fill="#f2c14e"/><text x="210" y="112" font-size="24">Paris · 1921–1923</text>
+      <circle cx="640" cy="120" r="14" fill="#f2c14e"/><text x="640" y="84" font-size="24">Pác Bó · 1941</text>
+    </g>
+    <g transform="translate(420 300)"><path d="M-50 0h100l-16 20h-68z" fill="#eaf1ff"/><rect x="-20" y="-22" width="16" height="22" fill="#eaf1ff"/><rect x="6" y="-30" width="12" height="30" fill="#eaf1ff"/></g>
+    <g transform="translate(110 300)" fill="#ffd94a"><path d="M0-34l8 24h26l-21 15 8 25-21-15-21 15 8-25-21-15h26z"/></g>
+  </svg>`
+};
+
+const cards = document.getElementById("cards");
+PROJECTS.forEach((p, i) => {
+  const has = p.url && p.url.trim();
+  const el = document.createElement("article");
+  el.className = "card";
+  el.innerHTML = `
+    <div class="thumb">${p.image ? `<img src="${p.image}" alt="${p.title}">` : ART[p.art]}<span class="num">ĐỒ ÁN 0${i+1}</span></div>
+    <div class="body">
+      <h4>${p.title}</h4>
+      <p class="desc">${p.desc}</p>
+      <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+      <div class="team"><b>Nhóm thực hiện:</b> ${p.team}</div>
+      <div class="actions">
+        <button class="btn btn-gold" ${has?"":"disabled"} data-i="${i}">${has?"▶ Trải nghiệm":"Sắp ra mắt"}</button>
+        ${has?`<a class="btn btn-ghost" href="${p.url}" target="_blank" rel="noopener">Mở tab mới ↗</a>`:""}
+        <div class="qr ${has?"":"empty"}" id="qr${i}">${has?"":"QR khi có link"}</div>
+      </div>
+    </div>`;
+  cards.appendChild(el);
+  if (has && window.QRCode) new QRCode(document.getElementById("qr"+i), {text:p.url, width:144, height:144, correctLevel:QRCode.CorrectLevel.M});
+});
+
+/* ---------- Trình phát nhúng ---------- */
+const player = document.getElementById("player"), frame = document.getElementById("pFrame");
+cards.addEventListener("click", e => {
+  const b = e.target.closest("button[data-i]"); if (!b || b.disabled) return;
+  const p = PROJECTS[+b.dataset.i];
+  document.getElementById("pTitle").textContent = p.title;
+  document.getElementById("pNewTab").href = p.url;
+  frame.src = p.url; player.classList.add("open"); document.body.style.overflow = "hidden";
+});
+function closePlayer(){ player.classList.remove("open"); frame.src = "about:blank"; document.body.style.overflow = ""; if (document.fullscreenElement) document.exitFullscreen(); }
+document.getElementById("pClose").onclick = closePlayer;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && player.classList.contains("open") && !document.fullscreenElement) closePlayer(); });
+document.getElementById("pFull").onclick = () => (frame.requestFullscreen || frame.webkitRequestFullscreen)?.call(frame);
+
+/* ---------- QR của chính trang (khi đã đưa lên mạng) ---------- */
+if (location.protocol.startsWith("http") && window.QRCode) {
+  const box = document.getElementById("siteQR"); box.style.display = "block";
+  document.getElementById("siteQRLabel").style.display = "inline";
+  new QRCode(box, {text: location.href.split("#")[0], width: 84, height: 84});
+}
+</script>
+</body>
+</html>
